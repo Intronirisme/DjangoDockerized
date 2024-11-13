@@ -1,7 +1,6 @@
 services:
   app:
     build: ./app
-    env_file: development.env
 
     volumes:
       - django_data:/var/www/app
@@ -11,6 +10,9 @@ services:
     
     ports:
       - 8080:8080
+
+    env_file:
+      - development.env
 
 volumes:
   django_data:

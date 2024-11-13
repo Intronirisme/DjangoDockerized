@@ -15,8 +15,8 @@ services:
     ports:
       - 8000:8000
 
-    environment:
-      - VIRTUAL_HOST=${DOMAIN}
+    env_file:
+      - production.env
 
   db:
     image: postgres:17
@@ -27,16 +27,8 @@ services:
     networks:
       - webapps
 
-    environment:
-      - POSTGRES_DB=${DATABASE}
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-
-    healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+    env_file:
+      - production.env
 
 
 volumes:
