@@ -1,0 +1,51 @@
+services:
+  app:
+    build: ./app
+    env_file: production.env
+
+    depends_on:
+      db:
+        condition: service_started
+
+    volumes:
+      - django_data:/var/www/app
+
+    networks:
+      - webapps
+
+    ports:
+      - 8000:8000
+
+    environment:
+      - VIRTUAL_HOST=${DOMAIN}
+
+  db:
+    image: postgres:17
+    env_file: production.env
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+    networks:
+      - webapps
+
+    environment:
+      - POSTGRES_DB=${DATABASE}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+volumes:
+  postgres_data:
+  django_data:
+
+networks:
+  webapps:
+    name: webapps
+    external: true
