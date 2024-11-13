@@ -29,11 +29,6 @@ services:
     networks:
       - webapps
 
-    environment:
-      - POSTGRES_DB=${DATABASE}
-      - POSTGRES_USER=${DATABASE_USER}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
-
     healthcheck:
       test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
       interval: 30s
