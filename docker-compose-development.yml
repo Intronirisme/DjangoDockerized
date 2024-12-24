@@ -6,18 +6,17 @@ services:
       - django_data:/var/www/app
 
     networks:
-      - webapps
+      - djangoweb
     
     ports:
-      - 8080:8080
+      - 80:8080
 
     env_file:
-      - development.env
+      - env/development.env
 
 volumes:
   django_data:
 
 networks:
   webapps:
-    name: webapps
-    external: true
+    name: djangoweb
